@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"os"
+
+	"github.com/nobbmaestro/tmux-tether/cmd"
+)
 
 var (
 	version = "dev"
@@ -9,5 +13,14 @@ var (
 )
 
 func main() {
-	fmt.Println("Hello, World!")
+	cmd.SetVersionInfo(
+		version,
+		commit,
+		date,
+	)
+
+	err := cmd.Execute()
+	if err != nil {
+		os.Exit(1)
+	}
 }

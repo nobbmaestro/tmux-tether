@@ -3,10 +3,13 @@ package cmd
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/nobbmaestro/tmux-tether/pkg/config"
+	"github.com/nobbmaestro/tmux-tether/pkg/picker"
 	"github.com/nobbmaestro/tmux-tether/pkg/registry"
+	"github.com/nobbmaestro/tmux-tether/pkg/tmux"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
 )
@@ -33,8 +36,41 @@ func runRoot(cmd *cobra.Command, args []string) error {
 	case printConfigPath:
 		return runPrintConfigPath(cmd, args)
 	default:
+		return pickSession(cmd, args)
+	}
+}
+
+func pickSession(cmd *cobra.Command, args []string) error {
+	reg := registry.NewRegistry(registry.WithContext(cmd.Context()))
+	cfg := reg.GetConfig()
+
+	sessions, err := tmux.FindSessions(
+		cfg.Session.Dirs,
+		cfg.Session.Markers,
+		cfg.Session.Depth,
+	)
+	if err != nil {
+		return err
+	}
+
+	p := picker.New(cfg.Picker,
+		func(s tmux.Session) string { return s.Name },
+	)
+
+	session, err := p.Pick(sessions)
+	if errors.Is(err, picker.ErrInterrupted) {
 		return nil
 	}
+	if err != nil {
+		return err
+	}
+
+	err = tmux.CreateOrSwitch(session)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func runPrintUserConfig(cmd *cobra.Command, args []string) error {

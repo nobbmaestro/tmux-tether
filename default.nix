@@ -8,7 +8,7 @@
 
 buildGoModule rec {
   pname = "tmux-tether";
-  version = "dev";
+  version = "0.1.0";
 
   inherit src;
 

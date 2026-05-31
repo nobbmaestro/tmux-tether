@@ -48,7 +48,7 @@
 
             src = inputs.self;
 
-            vendorHash = "sha256-komX1AmHt2NoF1x6xsNa2RFkfVzOXfYEMPhT0zwMxjw=";
+            vendorHash = "sha256-ABluLEPAIKKcJ1yZrxkPBYJvBd2RUz1NSmtBX/VrZnM=";
 
             doCheck = true;
 

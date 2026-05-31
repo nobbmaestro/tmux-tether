@@ -14,6 +14,9 @@ func GetDefaultUserConfig() *UserConfig {
 			Depth:   0,
 			Exclude: []string{},
 		},
+		Picker: PickerConfig{
+			Pointer: " ",
+			Prompt:  "  ",
 		},
 	}
 }

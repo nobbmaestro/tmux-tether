@@ -17,8 +17,18 @@ type SessionConfig struct {
 	Exclude []string `yaml:"exclude"`
 }
 
+type PickerConfig struct {
+	// Picker pointer icon
+	Pointer string `yaml:"pointer"`
+
+	// Picker prompt icon
+	Prompt string `yaml:"prompt"`
+}
+
 type UserConfig struct {
 	// Session configs
 	Session SessionConfig `yaml:"session"`
 
+	// Picker configs
+	Picker PickerConfig `yaml:"picker"`
 }

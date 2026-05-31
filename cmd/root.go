@@ -54,7 +54,8 @@ func pickSession(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	p := picker.New(cfg.Picker,
+	p := picker.New(
+		cfg.Picker,
 		func(s tmux.Session) string { return s.Name },
 	)
 
@@ -68,7 +69,7 @@ func pickSession(cmd *cobra.Command, args []string) error {
 
 	t := tmux.New(
 		shell.New(),
-		"",
+		cfg.TmuxCommand,
 	)
 
 	err = t.CreateOrSwitch(session)

@@ -10,6 +10,7 @@
 
   outputs =
     inputs@{
+      self,
       flake-parts,
       systems,
       ...
@@ -40,39 +41,9 @@
             go = prev."go_${builtins.replaceStrings [ "." ] [ "_" ] goVersion}";
           };
 
-          tmux-tether = pkgs.buildGoModule rec {
-            pname = "tmux-tether";
-            version = "dev";
-
-            gitCommit = inputs.self.rev or inputs.self.dirtyRev or "dev";
-
-            src = inputs.self;
-
-            vendorHash = "sha256-ABluLEPAIKKcJ1yZrxkPBYJvBd2RUz1NSmtBX/VrZnM=";
-
-            doCheck = true;
-
-            nativeBuildInputs = with pkgs; [
-              pkg-config
-            ];
-
-            ldflags = [
-              "-X main.version=${version}"
-              "-X main.commit=${gitCommit}"
-            ];
-
-            postInstall = ''
-              ln -s $out/bin/tmux-tether $out/bin/tt
-            '';
-
-            meta = {
-              description = "A simple terminal UI for tmux sessions, written in Go!";
-              homepage = "https://github.com/nobbmaestro/tmux-tether";
-              license = pkgs.lib.licenses.mit;
-              maintainers = [ "nobbmaestro" ];
-              platforms = pkgs.lib.platforms.unix;
-              mainProgram = "tmux-tether";
-            };
+          tmux-tether = pkgs.callPackage ./default.nix {
+            src = ./.;
+            gitCommit = self.rev or self.dirtyRev or "dev";
           };
         in
         {

@@ -27,6 +27,7 @@ type PickerConfig struct {
 
 type UserConfig struct {
 	TmuxCommand string `yaml:"tmux_command"`
+	GitCommand  string `yaml:"git_command"`
 
 	// Session configs
 	Session SessionConfig `yaml:"session"`

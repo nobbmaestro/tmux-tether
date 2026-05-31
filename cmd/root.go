@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/nobbmaestro/tmux-tether/cmd/clone"
 	"github.com/nobbmaestro/tmux-tether/pkg/config"
 	"github.com/nobbmaestro/tmux-tether/pkg/picker"
 	"github.com/nobbmaestro/tmux-tether/pkg/registry"
@@ -127,4 +128,6 @@ func init() {
 	rootCmd.
 		Flags().
 		BoolVarP(&printConfigPath, "config-dir", "d", false, "print the config directory")
+
+	rootCmd.AddCommand(clone.CloneCmd)
 }

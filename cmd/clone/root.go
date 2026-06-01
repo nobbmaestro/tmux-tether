@@ -6,6 +6,7 @@ import (
 	"path"
 	"strings"
 
+	configpath "github.com/nobbmaestro/tmux-tether/pkg/config/parsers"
 	"github.com/nobbmaestro/tmux-tether/pkg/git"
 	"github.com/nobbmaestro/tmux-tether/pkg/registry"
 	"github.com/nobbmaestro/tmux-tether/pkg/shell"
@@ -73,7 +74,7 @@ func runClone(cmd *cobra.Command, args []string) error {
 
 	err = t.CreateOrSwitch(tmux.Session{
 		Name: sessionName,
-		Path: path.Join(parentDir, repoName),
+		Path: configpath.New(path.Join(parentDir, repoName)),
 	})
 	if err != nil {
 		return err

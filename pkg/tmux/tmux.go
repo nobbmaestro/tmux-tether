@@ -33,7 +33,7 @@ func (t *Tmux) NewSession(s Session) error {
 		t.bin,
 		"new-session",
 		"-ds", s.Name,
-		"-c", s.Path,
+		"-c", s.Path.String(),
 	)
 }
 

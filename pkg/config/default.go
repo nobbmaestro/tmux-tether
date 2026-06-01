@@ -1,6 +1,9 @@
 package config
 
-import path "github.com/nobbmaestro/tmux-tether/pkg/config/parsers"
+import (
+	path "github.com/nobbmaestro/tmux-tether/pkg/config/parsers"
+	"github.com/nobbmaestro/tmux-tether/pkg/tmux"
+)
 
 func GetDefaultUserConfig() *UserConfig {
 	return &UserConfig{
@@ -15,6 +18,9 @@ func GetDefaultUserConfig() *UserConfig {
 			},
 			Depth:   0,
 			Exclude: []string{},
+		},
+		Switch: SessionSwitchConfig{
+			Markers: []tmux.Session{},
 		},
 		Picker: PickerConfig{
 			Pointer: " ",

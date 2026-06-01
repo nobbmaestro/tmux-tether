@@ -1,6 +1,9 @@
 package config
 
-import path "github.com/nobbmaestro/tmux-tether/pkg/config/parsers"
+import (
+	path "github.com/nobbmaestro/tmux-tether/pkg/config/parsers"
+	"github.com/nobbmaestro/tmux-tether/pkg/tmux"
+)
 
 type SessionConfig struct {
 	// Directories to search for potential tmux sessions
@@ -17,6 +20,11 @@ type SessionConfig struct {
 	Exclude []string `yaml:"exclude"`
 }
 
+type SessionSwitchConfig struct {
+	// List of marked sessions of quick switch
+	Markers []tmux.Session `yaml:"markers"`
+}
+
 type PickerConfig struct {
 	// Picker pointer icon
 	Pointer string `yaml:"pointer"`
@@ -31,6 +39,9 @@ type UserConfig struct {
 
 	// Session configs
 	Session SessionConfig `yaml:"session"`
+
+	// Session switcher configs
+	Switch SessionSwitchConfig `yaml:"switch"`
 
 	// Picker configs
 	Picker PickerConfig `yaml:"picker"`

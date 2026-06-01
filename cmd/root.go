@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/nobbmaestro/tmux-tether/cmd/clone"
+	switcher "github.com/nobbmaestro/tmux-tether/cmd/switch"
 	"github.com/nobbmaestro/tmux-tether/pkg/config"
 	"github.com/nobbmaestro/tmux-tether/pkg/picker"
 	"github.com/nobbmaestro/tmux-tether/pkg/registry"
@@ -130,4 +131,5 @@ func init() {
 		BoolVarP(&printConfigPath, "config-dir", "d", false, "print the config directory")
 
 	rootCmd.AddCommand(clone.CloneCmd)
+	rootCmd.AddCommand(switcher.SwitchCmd)
 }

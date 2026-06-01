@@ -45,6 +45,14 @@ func (t *Tmux) SwitchClient(s Session) error {
 	)
 }
 
+func (t *Tmux) SwitchLastSession() error {
+	return t.shell.CmdWithoutOutput(
+		t.bin,
+		"switch-client",
+		"-l",
+	)
+}
+
 func (t *Tmux) HasSession(s Session) bool {
 	err := t.shell.CmdWithoutOutput(
 		t.bin,

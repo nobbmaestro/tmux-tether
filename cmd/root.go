@@ -22,7 +22,7 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "tmux-tether [flags]",
+	Use:   "tt [flags]",
 	Short: "tmux-tether",
 	Args:  cobra.ArbitraryArgs,
 	RunE:  runRoot,

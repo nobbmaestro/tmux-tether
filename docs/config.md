@@ -30,8 +30,8 @@ session:
 
 picker:
   # Pointer icon
-  pointer: " "
+  pointer: " "
 
   # Prompt icon
-  prompt: "  "
+  prompt: "  "
 ```

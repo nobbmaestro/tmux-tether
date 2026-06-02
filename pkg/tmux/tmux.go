@@ -4,18 +4,37 @@ import (
 	"github.com/nobbmaestro/tmux-tether/pkg/shell"
 )
 
+type Option func(*Tmux)
+
 type Tmux struct {
 	bin   string
 	shell *shell.Shell
 }
 
-func New(s *shell.Shell, bin string) *Tmux {
-	if bin == "" {
-		bin = "tmux"
+func New(opts ...Option) *Tmux {
+	t := &Tmux{
+		bin:   "tmux",
+		shell: &shell.Shell{},
 	}
-	return &Tmux{
-		bin:   bin,
-		shell: s,
+
+	for _, opt := range opts {
+		opt(t)
+	}
+
+	return t
+}
+
+func WithShell(s *shell.Shell) Option {
+	return func(t *Tmux) {
+		t.shell = s
+	}
+}
+
+func WithBin(bin string) Option {
+	return func(t *Tmux) {
+		if bin != "" {
+			t.bin = bin
+		}
 	}
 }
 

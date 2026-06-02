@@ -12,7 +12,6 @@ import (
 	"github.com/nobbmaestro/tmux-tether/pkg/config"
 	"github.com/nobbmaestro/tmux-tether/pkg/picker"
 	"github.com/nobbmaestro/tmux-tether/pkg/registry"
-	"github.com/nobbmaestro/tmux-tether/pkg/shell"
 	"github.com/nobbmaestro/tmux-tether/pkg/tmux"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
@@ -71,8 +70,7 @@ func pickSession(cmd *cobra.Command, args []string) error {
 	}
 
 	t := tmux.New(
-		shell.New(),
-		cfg.TmuxCommand,
+		tmux.WithBin(cfg.TmuxCommand),
 	)
 
 	err = t.CreateOrSwitch(session)

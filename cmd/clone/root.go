@@ -9,7 +9,6 @@ import (
 	configpath "github.com/nobbmaestro/tmux-tether/pkg/config/parsers"
 	"github.com/nobbmaestro/tmux-tether/pkg/git"
 	"github.com/nobbmaestro/tmux-tether/pkg/registry"
-	"github.com/nobbmaestro/tmux-tether/pkg/shell"
 	"github.com/nobbmaestro/tmux-tether/pkg/tmux"
 	"github.com/spf13/cobra"
 )
@@ -48,13 +47,11 @@ func runClone(cmd *cobra.Command, args []string) error {
 		repoName)
 
 	g := git.New(
-		shell.New(),
-		cfg.GitCommand,
+		git.WithBin(cfg.GitCommand),
 	)
 
 	t := tmux.New(
-		shell.New(),
-		cfg.TmuxCommand,
+		tmux.WithBin(cfg.TmuxCommand),
 	)
 
 	err := os.MkdirAll(parentDir, 0755)

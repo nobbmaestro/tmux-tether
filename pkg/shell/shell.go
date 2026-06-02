@@ -7,11 +7,19 @@ import (
 	"strings"
 )
 
+type Option func(*Shell)
+
 type Shell struct {
 }
 
-func New() *Shell {
-	return &Shell{}
+func New(opts ...Option) *Shell {
+	s := &Shell{}
+
+	for _, opt := range opts {
+		opt(s)
+	}
+
+	return s
 }
 
 func (s *Shell) Cmd(cmd string, args ...string) (string, error) {

@@ -11,7 +11,7 @@ import (
 var SwitchCmd = &cobra.Command{
 	Use:   "switch [MARK]",
 	Short: "Switch to a marked tmux session",
-	Args:  cobra.ArbitraryArgs,
+	Args:  cobra.ExactArgs(1),
 	RunE:  runSwitch,
 }
 

@@ -23,7 +23,7 @@ var cloneOpts = &CloneOptions{}
 var CloneCmd = &cobra.Command{
 	Use:   "clone [flags] <URL>",
 	Short: "Clone repo from URL and initialize session",
-	Args:  cobra.ArbitraryArgs,
+	Args:  cobra.ExactArgs(1),
 	RunE:  runClone,
 }
 

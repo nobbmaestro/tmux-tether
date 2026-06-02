@@ -9,7 +9,7 @@ import (
 var LastCmd = &cobra.Command{
 	Use:   "last",
 	Short: "Switch to last tmux session",
-	Args:  cobra.ArbitraryArgs,
+	Args:  cobra.NoArgs,
 	RunE:  runLast,
 }
 

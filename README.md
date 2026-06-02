@@ -6,6 +6,21 @@
   A simple terminal UI for tmux session management, written in <a href="https://github.com/golang/go">Go</a>!
 </p>
 
+<p align="center">
+  <a href="https://github.com/nobbmaestro/tmux-tether/releases">
+      <img src="https://img.shields.io/github/v/release/nobbmaestro/tmux-tether" alt="GitHub Release" />
+  </a>
+  <a href="https://github.com/nobbmaestro/tmux-tether/commits/development">
+      <img src="https://img.shields.io/github/last-commit/nobbmaestro/tmux-tether/development" alt="GitHub Last Commit" />
+  </a>
+  <a href="https://github.com/nobbmaestro/nvim-andromeda/compare/0.1.0...development">
+      <img src="https://img.shields.io/github/commits-since/nobbmaestro/tmux-tether/0.1.0/development" alt="GitHub Commits Since" />
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+      <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License" />
+  </a>
+</p>
+
 ## Table of Contents
 
 - [Installation](#installation)

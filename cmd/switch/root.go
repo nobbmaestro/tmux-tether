@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"github.com/nobbmaestro/tmux-tether/pkg/registry"
-	"github.com/nobbmaestro/tmux-tether/pkg/tmux"
 	"github.com/spf13/cobra"
 )
 
@@ -21,10 +20,7 @@ var ErrInvalidID = errors.New("no session at provided mark")
 func runSwitch(cmd *cobra.Command, args []string) error {
 	reg := registry.NewRegistry(registry.WithContext(cmd.Context()))
 	cfg := reg.GetConfig()
-
-	t := tmux.New(
-		tmux.WithBin(cfg.TmuxCommand),
-	)
+	ser := reg.GetService()
 
 	if len(args) == 0 {
 		return ErrInvalidID
@@ -39,7 +35,7 @@ func runSwitch(cmd *cobra.Command, args []string) error {
 		return ErrInvalidID
 	}
 
-	err = t.CreateOrSwitch(cfg.Switch.Markers[id])
+	err = ser.CreateOrSwitch(cfg.Switch.Markers[id])
 	if err != nil {
 		return err
 	}

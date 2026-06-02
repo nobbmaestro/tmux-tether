@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/nobbmaestro/tmux-tether/pkg/config"
+	"github.com/nobbmaestro/tmux-tether/pkg/service"
 )
 
 type ContextKey int
@@ -11,6 +12,7 @@ type ContextKey int
 const (
 	ConfigKey ContextKey = iota
 	ConfigPathKey
+	ServiceKey
 )
 
 type Registry struct {
@@ -45,6 +47,12 @@ func WithConfigPath(path string) Option {
 	}
 }
 
+func WithService(s *service.Service) Option {
+	return func(r *Registry) {
+		r.Context = context.WithValue(r.Context, ServiceKey, s)
+	}
+}
+
 func (r Registry) GetConfig() *config.UserConfig {
 	if val, ok := r.Context.Value(ConfigKey).(*config.UserConfig); ok {
 		return val
@@ -57,4 +65,11 @@ func (r Registry) GetConfigPath() string {
 		return val
 	}
 	return ""
+}
+
+func (r Registry) GetService() *service.Service {
+	if s, ok := r.Context.Value(ServiceKey).(*service.Service); ok {
+		return s
+	}
+	return nil
 }

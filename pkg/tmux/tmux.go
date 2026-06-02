@@ -38,15 +38,6 @@ func WithBin(bin string) Option {
 	}
 }
 
-func (t *Tmux) CreateOrSwitch(s Session) error {
-	if exists := t.HasSession(s); !exists {
-		if err := t.NewSession(s); err != nil {
-			return err
-		}
-	}
-	return t.SwitchClient(s)
-}
-
 func (t *Tmux) NewSession(s Session) error {
 	return t.shell.CmdWithoutOutput(
 		t.bin,

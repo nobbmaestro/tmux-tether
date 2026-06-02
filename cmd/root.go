@@ -46,6 +46,7 @@ func runRoot(cmd *cobra.Command, args []string) error {
 func pickSession(cmd *cobra.Command, args []string) error {
 	reg := registry.NewRegistry(registry.WithContext(cmd.Context()))
 	cfg := reg.GetConfig()
+	ser := reg.GetService()
 
 	sessions, err := tmux.FindSessions(
 		cfg.Session.Dirs,
@@ -69,11 +70,7 @@ func pickSession(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	t := tmux.New(
-		tmux.WithBin(cfg.TmuxCommand),
-	)
-
-	err = t.CreateOrSwitch(session)
+	err = ser.CreateOrSwitch(session)
 	if err != nil {
 		return err
 	}

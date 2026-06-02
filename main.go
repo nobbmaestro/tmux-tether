@@ -7,6 +7,8 @@ import (
 	"github.com/nobbmaestro/tmux-tether/cmd"
 	"github.com/nobbmaestro/tmux-tether/pkg/config"
 	"github.com/nobbmaestro/tmux-tether/pkg/registry"
+	"github.com/nobbmaestro/tmux-tether/pkg/service"
+	"github.com/nobbmaestro/tmux-tether/pkg/tmux"
 )
 
 var (
@@ -25,9 +27,17 @@ var confPath = filepath.Join(
 func main() {
 	cfg := config.ReadUserConfig(confPath)
 
+	ser := service.New(
+		&cfg.Session,
+		tmux.New(
+			tmux.WithBin(cfg.TmuxCommand),
+		),
+	)
+
 	reg := registry.NewRegistry(
 		registry.WithConfig(cfg),
 		registry.WithConfigPath(confPath),
+		registry.WithService(ser),
 	)
 
 	cmd.SetContext(reg.Context)

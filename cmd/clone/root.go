@@ -35,6 +35,7 @@ func nameFromGitUrl(url string) string {
 func runClone(cmd *cobra.Command, args []string) error {
 	reg := registry.NewRegistry(registry.WithContext(cmd.Context()))
 	cfg := reg.GetConfig()
+	ser := reg.GetService()
 
 	repoName := nameFromGitUrl(args[0])
 
@@ -48,10 +49,6 @@ func runClone(cmd *cobra.Command, args []string) error {
 
 	g := git.New(
 		git.WithBin(cfg.GitCommand),
-	)
-
-	t := tmux.New(
-		tmux.WithBin(cfg.TmuxCommand),
 	)
 
 	err := os.MkdirAll(parentDir, 0755)
@@ -69,7 +66,7 @@ func runClone(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	err = t.CreateOrSwitch(tmux.Session{
+	err = ser.CreateOrSwitch(tmux.Session{
 		Name: sessionName,
 		Path: configpath.New(path.Join(parentDir, repoName)),
 	})

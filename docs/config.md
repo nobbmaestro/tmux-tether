@@ -7,6 +7,12 @@ Default path for the global configuration file:
 ## Default
 
 ```yml
+# Path to the tmux binary. Defaults to "tmux" resolved from $PATH
+tmux_command: ""
+
+# Path to the git binary. Defaults to "git" resolved from $PATH
+git_command: ""
+
 session:
   # List of directories to search in
   dirs:
@@ -24,8 +30,8 @@ session:
 
 picker:
   # Pointer icon
-  pointer: " "
+  pointer: " "
 
   # Prompt icon
-  prompt: "  "
+  prompt: "  "
 ```

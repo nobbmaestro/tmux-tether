@@ -9,7 +9,7 @@ import (
 
 type Session struct {
 	Name string
-	Path string
+	Path configpath.Path
 }
 
 func isSessionDir(dir string, indicators []string) bool {
@@ -45,7 +45,7 @@ func findSessionsInDir(
 		if isSessionDir(entryDir, indicators) {
 			sessions = append(sessions, Session{
 				Name: entry.Name(),
-				Path: entryDir,
+				Path: configpath.New(entryDir),
 			})
 		}
 

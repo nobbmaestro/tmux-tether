@@ -6,6 +6,9 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/nobbmaestro/tmux-tether/cmd/clone"
+	"github.com/nobbmaestro/tmux-tether/cmd/last"
+	switcher "github.com/nobbmaestro/tmux-tether/cmd/switch"
 	"github.com/nobbmaestro/tmux-tether/pkg/config"
 	"github.com/nobbmaestro/tmux-tether/pkg/picker"
 	"github.com/nobbmaestro/tmux-tether/pkg/registry"
@@ -21,7 +24,7 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "tmux-tether [flags]",
+	Use:   "tt [flags]",
 	Short: "tmux-tether",
 	Args:  cobra.ArbitraryArgs,
 	RunE:  runRoot,
@@ -53,7 +56,8 @@ func pickSession(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	p := picker.New(cfg.Picker,
+	p := picker.New(
+		cfg.Picker,
 		func(s tmux.Session) string { return s.Name },
 	)
 
@@ -65,7 +69,11 @@ func pickSession(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	err = tmux.CreateOrSwitch(session)
+	t := tmux.New(
+		tmux.WithBin(cfg.TmuxCommand),
+	)
+
+	err = t.CreateOrSwitch(session)
 	if err != nil {
 		return err
 	}
@@ -120,4 +128,8 @@ func init() {
 	rootCmd.
 		Flags().
 		BoolVarP(&printConfigPath, "config-dir", "d", false, "print the config directory")
+
+	rootCmd.AddCommand(last.LastCmd)
+	rootCmd.AddCommand(clone.CloneCmd)
+	rootCmd.AddCommand(switcher.SwitchCmd)
 }

@@ -1,58 +1,82 @@
 package tmux
 
-import "os/exec"
+import (
+	"github.com/nobbmaestro/tmux-tether/pkg/shell"
+)
 
-func CreateOrSwitch(s Session) error {
-	exists, err := HasSession(s)
-	if err != nil {
-		return err
+type Option func(*Tmux)
+
+type Tmux struct {
+	bin   string
+	shell *shell.Shell
+}
+
+func New(opts ...Option) *Tmux {
+	t := &Tmux{
+		bin:   "tmux",
+		shell: &shell.Shell{},
 	}
 
-	if !exists {
-		if err := NewSession(s); err != nil {
+	for _, opt := range opts {
+		opt(t)
+	}
+
+	return t
+}
+
+func WithShell(s *shell.Shell) Option {
+	return func(t *Tmux) {
+		t.shell = s
+	}
+}
+
+func WithBin(bin string) Option {
+	return func(t *Tmux) {
+		if bin != "" {
+			t.bin = bin
+		}
+	}
+}
+
+func (t *Tmux) CreateOrSwitch(s Session) error {
+	if exists := t.HasSession(s); !exists {
+		if err := t.NewSession(s); err != nil {
 			return err
 		}
 	}
-
-	return SwitchClient(s)
+	return t.SwitchClient(s)
 }
 
-func NewSession(s Session) error {
-	cmd := exec.Command(
-		"tmux",
+func (t *Tmux) NewSession(s Session) error {
+	return t.shell.CmdWithoutOutput(
+		t.bin,
 		"new-session",
 		"-ds", s.Name,
-		"-c", s.Path,
+		"-c", s.Path.String(),
 	)
-	return cmd.Run()
 }
 
-func SwitchClient(s Session) error {
-	cmd := exec.Command(
-		"tmux",
+func (t *Tmux) SwitchClient(s Session) error {
+	return t.shell.CmdWithoutOutput(
+		t.bin,
 		"switch-client",
 		"-t", s.Name,
 	)
-	return cmd.Run()
 }
 
-func HasSession(s Session) (bool, error) {
-	cmd := exec.Command(
-		"tmux",
+func (t *Tmux) SwitchLastSession() error {
+	return t.shell.CmdWithoutOutput(
+		t.bin,
+		"switch-client",
+		"-l",
+	)
+}
+
+func (t *Tmux) HasSession(s Session) bool {
+	err := t.shell.CmdWithoutOutput(
+		t.bin,
 		"has-session",
 		"-t", s.Name,
 	)
-
-	err := cmd.Run()
-	if err == nil {
-		return true, nil
-	}
-
-	if exitErr, ok := err.(*exec.ExitError); ok {
-		if exitErr.ExitCode() != 0 {
-			return false, nil
-		}
-	}
-
-	return false, err
+	return err == nil
 }

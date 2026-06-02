@@ -2,17 +2,24 @@ package service
 
 import (
 	"github.com/nobbmaestro/tmux-tether/pkg/config"
+	"github.com/nobbmaestro/tmux-tether/pkg/storage"
 	"github.com/nobbmaestro/tmux-tether/pkg/tmux"
 )
 
 type Service struct {
-	cfg  *config.SessionConfig
-	tmux *tmux.Tmux
+	cfg     *config.SessionConfig
+	storage *storage.SessionStorage
+	tmux    *tmux.Tmux
 }
 
-func New(cfg *config.SessionConfig, t *tmux.Tmux) *Service {
+func New(
+	c *config.SessionConfig,
+	s *storage.SessionStorage,
+	t *tmux.Tmux,
+) *Service {
 	return &Service{
-		tmux: t,
-		cfg:  cfg,
+		cfg:     c,
+		storage: s,
+		tmux:    t,
 	}
 }

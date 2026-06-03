@@ -17,15 +17,19 @@ func New(path string) *SessionStorage {
 	}
 }
 
+func sameName(sess tmux.Session) func(tmux.Session) bool {
+	return func(e tmux.Session) bool { return e.Name == sess.Name }
+}
+
 func (s *SessionStorage) Add(sess tmux.Session) {
-	if !slices.Contains(s.Sessions, sess) {
+	if !slices.ContainsFunc(s.Sessions, sameName(sess)) {
 		s.Sessions = append(s.Sessions, sess)
 	}
 }
 
 func (s *SessionStorage) Remove(sess tmux.Session) {
-	if slices.Contains(s.Sessions, sess) {
-		idx := slices.Index(s.Sessions, sess)
+	idx := slices.IndexFunc(s.Sessions, sameName(sess))
+	if idx != -1 {
 		s.Sessions = slices.Delete(s.Sessions, idx, idx+1)
 	}
 }

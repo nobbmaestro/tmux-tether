@@ -8,6 +8,7 @@ import (
 
 	"github.com/nobbmaestro/tmux-tether/cmd/clone"
 	"github.com/nobbmaestro/tmux-tether/cmd/last"
+	"github.com/nobbmaestro/tmux-tether/cmd/session"
 	switcher "github.com/nobbmaestro/tmux-tether/cmd/switch"
 	"github.com/nobbmaestro/tmux-tether/pkg/config"
 	"github.com/nobbmaestro/tmux-tether/pkg/picker"
@@ -128,5 +129,6 @@ func init() {
 
 	rootCmd.AddCommand(last.LastCmd)
 	rootCmd.AddCommand(clone.CloneCmd)
+	rootCmd.AddCommand(session.SessionCmd)
 	rootCmd.AddCommand(switcher.SwitchCmd)
 }

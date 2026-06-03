@@ -23,3 +23,11 @@ func New(
 		tmux:    t,
 	}
 }
+
+func (s *Service) AddToStorage(sess tmux.Session) {
+	s.storage.Add(sess)
+}
+
+func (s *Service) RemoveFromStorage(sess tmux.Session) {
+	s.storage.Remove(sess)
+}

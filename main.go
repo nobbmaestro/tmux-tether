@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -33,24 +34,23 @@ var storePath = filepath.Join(
 	"state.yml",
 )
 
-func main() {
+func run() error {
 	cfg := config.ReadUserConfig(confPath)
-	store := storage.New(storePath)
+	s := storage.New(storePath)
 
-	err := store.Read()
-	if err != nil {
-		os.Exit(2)
+	if err := s.Read(); err != nil {
+		return err
 	}
 
 	defer func() {
-		if cerr := store.Write(); err == nil {
-			err = cerr
+		if err := s.Write(); err != nil {
+			fmt.Fprintln(os.Stderr, err)
 		}
 	}()
 
 	ser := service.New(
 		&cfg.Session,
-		store,
+		s,
 		tmux.New(
 			tmux.WithBin(cfg.TmuxCommand),
 			tmux.WithHook(tmux.SessionClosedHook),
@@ -67,8 +67,11 @@ func main() {
 	cmd.SetContext(reg.Context)
 	cmd.SetVersionInfo(version, commit, date)
 
-	err = cmd.Execute()
-	if err != nil {
+	return cmd.Execute()
+}
+
+func main() {
+	if err := run(); err != nil {
 		os.Exit(1)
 	}
 }

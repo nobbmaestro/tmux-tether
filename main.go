@@ -53,6 +53,8 @@ func main() {
 		store,
 		tmux.New(
 			tmux.WithBin(cfg.TmuxCommand),
+			tmux.WithHook(tmux.SessionClosedHook),
+			tmux.WithHook(tmux.SessionCreatedHook),
 		),
 	)
 

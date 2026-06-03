@@ -1,6 +1,8 @@
 package tmux
 
 import (
+	"fmt"
+
 	"github.com/nobbmaestro/tmux-tether/pkg/shell"
 )
 
@@ -38,6 +40,15 @@ func WithBin(bin string) Option {
 	}
 }
 
+func WithHook(h *Hook) Option {
+	return func(t *Tmux) {
+		err := t.SetHook(h)
+		if err != nil {
+			fmt.Println("Setting hook failed!")
+		}
+	}
+}
+
 func (t *Tmux) NewSession(s Session) error {
 	return t.shell.CmdWithoutOutput(
 		t.bin,
@@ -70,4 +81,14 @@ func (t *Tmux) HasSession(s Session) bool {
 		"-t", s.Name,
 	)
 	return err == nil
+}
+
+func (t *Tmux) SetHook(h *Hook) error {
+	return t.shell.CmdWithoutOutput(
+		t.bin,
+		"set-hook",
+		"-g",
+		string(h.Type),
+		string(h.Cmd),
+	)
 }

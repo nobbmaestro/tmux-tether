@@ -6,6 +6,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     systems.url = "github:nix-systems/default";
     treefmt-nix.url = "github:numtide/treefmt-nix";
+    git-hooks-nix.url = "github:cachix/git-hooks.nix";
   };
 
   outputs =
@@ -19,10 +20,12 @@
       systems = import systems;
       imports = [
         inputs.treefmt-nix.flakeModule
+        inputs.git-hooks-nix.flakeModule
       ];
 
       perSystem =
         {
+          config,
           pkgs,
           system,
           ...
@@ -76,6 +79,21 @@
           };
 
           checks.build = tmux-tether;
+
+          pre-commit = {
+            settings.hooks = {
+              treefmt = {
+                enable = true;
+                package = config.treefmt.build.wrapper;
+              };
+              golangci-lint.enable = true;
+            };
+          };
+
+          apps.install-hooks = {
+            type = "app";
+            program = "${pkgs.writeShellScript "install-hooks" config.pre-commit.installationScript}";
+          };
         };
 
       flake = {
